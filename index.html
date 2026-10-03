@@ -1,10 +1,12 @@
 <!DOCTYPE html>
+<!-- Portfolio de Valentin Nunes : frise du parcours animée, vidéo de présentation, mentions légales -->
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- MODIFIER ICI : titre de l'onglet du navigateur et description (SEO) -->
 <title>Valentin Nunes – Développeur web</title>
+<script>document.documentElement.classList.add('js')</script>
 <meta name="description" content="Portfolio de Valentin Nunes, développeur web.">
 <!-- Les polices Inter et Source Serif 4 sont hébergées dans le dossier "fonts" : aucune requête vers Google, donc rien à déclarer côté RGPD.
      IMPORTANT : envoyez le dossier "fonts" avec index.html sur GitHub. -->
@@ -77,7 +79,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:
 /* ==========================================================
    3. PANNEAUX ET COMPOSANTS COMMUNS
    ========================================================== */
-main{max-width:1100px;width:100%;flex:1;margin:0 auto;padding:52px 24px 80px}
+main{max-width:1100px;width:100%;flex:1;margin:0 auto;padding:32px 24px 72px}
 .panel{display:none}
 .panel.active{display:block;animation:enter .3s ease}
 @keyframes enter{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
@@ -129,31 +131,29 @@ h3{font-size:1.02rem;font-weight:600;color:var(--navy)}
 .cols{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
 .timeline{position:relative;padding-left:28px;display:grid;gap:16px}
 .timeline::before{content:"";position:absolute;left:5px;top:8px;bottom:8px;width:2px;background:var(--line)}
-.item{position:relative}
-.item::before{content:"";position:absolute;left:-28px;top:28px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:3px solid var(--navy);transition:transform .2s,border-color .2s}
-.item:hover::before{transform:scale(1.35);border-color:var(--brass)}
+.item{position:relative;z-index:1}      /* les ronds passent au-dessus du trait */
+.item::before{content:"";position:absolute;left:-29px;top:50%;transform:translateY(-50%);width:12px;height:12px;border-radius:50%;background:var(--surface);border:3px solid var(--navy);transition:transform .2s,border-color .3s,background .3s}
+.item:hover::before{transform:translateY(-50%) scale(1.35);border-color:var(--brass)}
+.item.lit::before{background:var(--brass);border-color:var(--brass)}   /* rond allumé : le trait l'a atteint */
 .date{color:var(--accent);font-weight:600;font-size:.86rem}
 .place{color:var(--muted);font-size:.92rem;margin-bottom:6px}
 
 /* ==========================================================
    6. COMPÉTENCES
    ========================================================== */
-.bar{margin-bottom:18px}
-.bar-top{display:flex;justify-content:space-between;font-weight:500;font-size:.95rem;margin-bottom:6px}
-.track{height:6px;border-radius:3px;background:var(--line);overflow:hidden}
-.fill{height:100%;width:0;background:var(--navy);transition:width 1s cubic-bezier(.2,.8,.2,1)}
 .badges{display:flex;flex-wrap:wrap;gap:8px}
 .badge{display:inline-block;font-size:.84rem;font-weight:500;padding:5px 12px;border-radius:4px;background:var(--chip);color:var(--navy);transition:transform .2s ease,background .2s,color .2s}
 .badge:hover{transform:scale(1.07);background:var(--navy);color:#fff}
+/* Liste des compétences métier */
+.skills{list-style:none;display:grid;gap:10px}
+.skills li{padding:11px 16px;background:var(--chip);border-left:3px solid var(--brass);border-radius:4px;font-weight:500;color:var(--navy);transition:transform .2s ease,background .2s,color .2s}
+.skills li:hover{transform:translateX(5px);background:var(--navy);color:#fff}
 
 /* ==========================================================
-   7. LANGUES (niveau en 5 segments)
+   7. LANGUES
    ========================================================== */
 .langs{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
-.seg{display:flex;gap:4px;margin:12px 0 8px}
-.seg i{flex:1;height:6px;border-radius:2px;background:var(--line);transition:background .25s}
-.seg i.on{background:var(--navy)}
-.card:hover .seg i.on{background:var(--brass)}
+.langs .place{display:block;margin:6px 0 0}
 
 /* ==========================================================
    8. PROJETS
@@ -171,15 +171,41 @@ h3{font-size:1.02rem;font-weight:600;color:var(--navy)}
 /* ==========================================================
    9. CONTACT
    ========================================================== */
-form{display:grid;gap:16px}
-label{font-weight:500;font-size:.92rem}
-input,textarea{width:100%;font:inherit;color:var(--text);background:var(--surface);border:1px solid #c5ccd5;border-radius:var(--radius);padding:11px 14px;margin-top:6px;transition:border-color .2s,box-shadow .2s}
-input:focus,textarea:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(212,162,74,.35)}
-textarea{min-height:130px;resize:vertical}
-.socials{display:grid;gap:14px}
+.socials{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
 .social{display:flex;justify-content:space-between;align-items:center;gap:12px;text-decoration:none;color:var(--navy);font-weight:600;padding:18px 22px}
 .social small{color:var(--muted);font-weight:400}
-#msg{color:var(--accent);font-weight:500;min-height:1.4em}
+
+/* ==========================================================
+   PAGE UNIQUE : toutes les parties s'enchaînent, le menu fait défiler jusqu'à elles
+   ========================================================== */
+html{scroll-padding-top:72px}                     /* évite que le menu fixe masque le titre */
+.section{padding:64px 0}                          /* MODIFIER ICI : espace entre les parties */
+.section + .section{border-top:1px solid var(--line)}
+#accueil{padding-top:24px}
+.legal-view .section{display:none}                /* sur les pages légales, on masque le reste du site */
+
+/* ANIMATION D'APPARITION au défilement (chaque bloc monte en fondu, l'un après l'autre) */
+@keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+.js .reveal:not(.in){opacity:0}
+.reveal.in{animation:rise .75s cubic-bezier(.2,.8,.2,1) var(--d,0s) backwards}   /* .75s = durée */
+
+/* Frise du parcours : le trait doré se dessine pendant le défilement */
+.timeline::after{content:"";position:absolute;left:5px;top:8px;width:2px;height:calc((100% - 16px) * var(--prog,0));background:var(--brass);z-index:0}
+
+/* Encadré vidéo de présentation */
+/* Disposition de Langues : cartes à gauche, vidéo verticale à droite */
+.lang-split{display:grid;grid-template-columns:1fr auto;gap:56px;align-items:center}
+.lang-split .langs{grid-template-columns:1fr;align-content:center}
+.video-block{width:min(100%,280px);justify-self:center}   /* MODIFIER ICI : 280px = largeur de la vidéo */
+.video-frame{padding:0;overflow:hidden;aspect-ratio:9/16;border-radius:18px;background:var(--navy);display:grid;place-items:center}
+.video-frame video,.video-frame iframe{width:100%;height:100%;border:0;display:block;object-fit:contain;background:#000}
+.video-ph{display:grid;justify-items:center;gap:14px;color:#c3ccd8;text-align:center;padding:24px}
+.video-ph .play{position:relative;display:grid;place-items:center}
+.video-ph .play::before{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid var(--brass);animation:pulse 2.2s ease-out infinite}   /* anneau qui pulse : invite à lancer la vidéo */
+@keyframes pulse{0%{transform:scale(1);opacity:.9}100%{transform:scale(2);opacity:0}}
+.video-ph b{font-weight:600;color:#fff}
+.video-ph svg{width:72px;height:72px;transition:transform .3s}
+.video-frame:hover .video-ph svg{transform:scale(1.12)}
 
 /* Pages légales */
 .legal{max-width:780px}
@@ -187,8 +213,6 @@ textarea{min-height:130px;resize:vertical}
 .legal p,.legal li{margin-bottom:8px}
 .legal ul{padding-left:22px;margin-bottom:8px}
 .legal a{color:var(--navy)}
-.note{font-size:.85rem;color:var(--muted)}
-.note a{color:var(--navy)}
 
 footer{text-align:center;color:#c3ccd8;font-size:.88rem;padding:30px 24px;background:var(--navy)}
 .foot-links{display:flex;gap:10px 22px;justify-content:center;flex-wrap:wrap;margin-top:8px}
@@ -231,6 +255,8 @@ footer{text-align:center;color:#c3ccd8;font-size:.88rem;padding:30px 24px;backgr
   .hero{grid-template-columns:1fr;gap:28px}
   .avatar{width:180px;height:225px}
   .cols{grid-template-columns:1fr}
+  .section{padding:44px 0}
+  .lang-split{grid-template-columns:1fr;gap:32px}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -240,7 +266,7 @@ footer{text-align:center;color:#c3ccd8;font-size:.88rem;padding:30px 24px;backgr
 
 <!-- ==========================================================
      EN-TÊTE + ONGLETS
-     data-tab doit correspondre à l'id du panneau plus bas.
+     data-tab doit correspondre à l'id de la section plus bas.
      Pour supprimer un onglet, retirez le bouton ET sa <section>.
      ========================================================== -->
 <header class="top">
@@ -248,13 +274,13 @@ footer{text-align:center;color:#c3ccd8;font-size:.88rem;padding:30px 24px;backgr
     <div class="brand">Valentin Nunes</div>   <!-- MODIFIER ICI : votre nom -->
     <!-- Bouton du menu mobile (visible uniquement sur téléphone) : ouvre la grille des sections -->
     <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu"><span class="bars"></span>Explorer</button>
-    <nav class="tabs" id="menu" role="tablist" aria-label="Navigation principale">
-      <button class="tab active" role="tab" data-tab="accueil"><svg class="tab-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg><span class="tab-name">Accueil</span><span class="tab-desc">Qui je suis</span></button>
-      <button class="tab" role="tab" data-tab="parcours"><svg class="tab-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg><span class="tab-name">Parcours</span><span class="tab-desc">Études et expériences</span></button>
-      <button class="tab" role="tab" data-tab="competences"><svg class="tab-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V10"/><path d="M12 20V4"/><path d="M19 20v-7"/></svg><span class="tab-name">Compétences</span><span class="tab-desc">Ce que je maîtrise</span></button>
-      <button class="tab" role="tab" data-tab="langues"><svg class="tab-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3 3 3 15 0 18"/><path d="M12 3c-3 3-3 15 0 18"/></svg><span class="tab-name">Langues</span><span class="tab-desc">Mes niveaux</span></button>
-      <button class="tab" role="tab" data-tab="projets"><svg class="tab-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="tab-name">Projets</span><span class="tab-desc">Mes réalisations</span></button>
-      <button class="tab" role="tab" data-tab="contact"><svg class="tab-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><span class="tab-name">Contact</span><span class="tab-desc">Me joindre</span></button>
+    <nav class="tabs" id="menu" aria-label="Navigation principale">
+      <button class="tab active" data-tab="accueil"><svg class="tab-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg><span class="tab-name">Accueil</span><span class="tab-desc">Qui je suis</span></button>
+      <button class="tab" data-tab="parcours"><svg class="tab-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg><span class="tab-name">Parcours</span><span class="tab-desc">Études et expériences</span></button>
+      <button class="tab" data-tab="competences"><svg class="tab-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V10"/><path d="M12 20V4"/><path d="M19 20v-7"/></svg><span class="tab-name">Compétences</span><span class="tab-desc">Ce que je maîtrise</span></button>
+      <button class="tab" data-tab="langues"><svg class="tab-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3 3 3 15 0 18"/><path d="M12 3c-3 3-3 15 0 18"/></svg><span class="tab-name">Langues</span><span class="tab-desc">Français et anglais</span></button>
+      <button class="tab" data-tab="projets"><svg class="tab-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="tab-name">Projets</span><span class="tab-desc">Mes réalisations</span></button>
+      <button class="tab" data-tab="contact"><svg class="tab-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><span class="tab-name">Contact</span><span class="tab-desc">Me joindre</span></button>
     </nav>
   </div>
 </header>
@@ -262,7 +288,7 @@ footer{text-align:center;color:#c3ccd8;font-size:.88rem;padding:30px 24px;backgr
 <main>
 
 <!-- ========================= ACCUEIL ========================= -->
-<section id="accueil" class="panel active">
+<section id="accueil" class="section">
   <div class="hero">
     <div class="avatar">
       <!-- MODIFIER ICI : mettez votre photo dans le même dossier et remplacez "photo.jpg" -->
@@ -283,17 +309,14 @@ footer{text-align:center;color:#c3ccd8;font-size:.88rem;padding:30px 24px;backgr
 
   <!-- MODIFIER ICI : informations clés (dupliquez ou supprimez un bloc .stat) -->
   <div class="stats">
-    <div class="card stat"><strong>3 ans</strong><span>d'expérience</span></div>
     <div class="card stat"><strong>12</strong><span>projets réalisés</span></div>
     <div class="card stat"><strong>Tarbes</strong><span>Localisation</span></div>
-    <div class="card stat"><strong>Septembre 2026</strong><span>Disponibilité</span></div>
   </div>
 </section>
 
 <!-- ========================= PARCOURS ========================= -->
-<section id="parcours" class="panel">
-  <h2>Parcours</h2>
-  <p class="sub">Formation et expériences, de la plus récente à la plus ancienne.</p>
+<section id="parcours" class="section">
+  <h2 style="margin-bottom:34px">Parcours</h2>
   <div class="cols">
 
     <div>
@@ -301,16 +324,16 @@ footer{text-align:center;color:#c3ccd8;font-size:.88rem;padding:30px 24px;backgr
       <div class="timeline">
         <!-- MODIFIER ICI : une carte .item = une formation. Copiez-collez pour en ajouter. -->
         <div class="item card">
-          <span class="date">2022 – 2025</span>
-          <h3>Intitulé du diplôme</h3>
-          <p class="place">Établissement, Ville</p>
-          <p>Décrivez en une phrase les matières ou réalisations clés.</p>
+          <span class="date">2025 – aujourd'hui</span>
+          <h3>BUT GEA (Gestion des Entreprises et des Administrations)</h3>
+          <p class="place">IUT · 2e année (2026 – 2027), 1re année validée en 2025 – 2026</p>
+          <p>Apprentissage des piliers de la gestion, de la comptabilité, de la finance et du management des organisations.</p>
         </div>
         <div class="item card">
-          <span class="date">2020 – 2022</span>
-          <h3>Intitulé du diplôme</h3>
-          <p class="place">Établissement, Ville</p>
-          <p>Description courte.</p>
+          <span class="date">2025</span>
+          <h3>Bac Professionnel MELEC (Métiers de l’Électricité et de ses Environnements Connectés)</h3>
+          <p class="place">Lycée</p>
+          <p>Formation technique spécialisée dans les installations électriques et les environnements connectés.</p>
         </div>
       </div>
     </div>
@@ -320,16 +343,16 @@ footer{text-align:center;color:#c3ccd8;font-size:.88rem;padding:30px 24px;backgr
       <div class="timeline">
         <!-- MODIFIER ICI : une carte .item = une expérience. -->
         <div class="item card">
-          <span class="date">Janvier 2025 – aujourd'hui</span>
-          <h3>Intitulé du poste</h3>
-          <p class="place">Entreprise, Ville</p>
-          <p>Vos missions et résultats principaux.</p>
+          <span class="date">2026 · Stage de 1re année de BUT GEA</span>
+          <h3>Stagiaire en gestion et logistique</h3>
+          <p class="place">Unikalo, Tarbes (magasin de peinture)</p>
+          <p>Gestion des stocks, suivi des commandes fournisseurs et aide à la vente.</p>
         </div>
         <div class="item card">
-          <span class="date">Été 2024</span>
-          <h3>Stage ou emploi saisonnier</h3>
-          <p class="place">Entreprise, Ville</p>
-          <p>Vos missions.</p>
+          <span class="date">2023 – 2025 · 20 semaines de stage</span>
+          <h3>Stagiaire technicien</h3>
+          <p class="place">Sefti, Pouillon</p>
+          <p>Apprentissage des bases du métier dans le bâtiment.</p>
         </div>
       </div>
     </div>
@@ -338,32 +361,30 @@ footer{text-align:center;color:#c3ccd8;font-size:.88rem;padding:30px 24px;backgr
 </section>
 
 <!-- ========================= COMPÉTENCES ========================= -->
-<section id="competences" class="panel">
+<section id="competences" class="section">
   <h2>Compétences</h2>
-  <p class="sub">Compétences techniques, savoir-être et outils.</p>
+  <p class="sub">Compétences acquises lors de mon BUT GEA et qualités personnelles.</p>
   <div class="cols">
 
     <div class="card">
-      <h3 class="group-title">Techniques</h3>
-      <!-- MODIFIER ICI : nom, pourcentage affiché ET data-level (0 à 100, même valeur) -->
-      <div class="bar"><div class="bar-top"><span>HTML / CSS</span><span>90 %</span></div><div class="track"><div class="fill" data-level="90"></div></div></div>
-      <div class="bar"><div class="bar-top"><span>JavaScript</span><span>75 %</span></div><div class="track"><div class="fill" data-level="75"></div></div></div>
-      <div class="bar"><div class="bar-top"><span>React</span><span>60 %</span></div><div class="track"><div class="fill" data-level="60"></div></div></div>
-      <div class="bar"><div class="bar-top"><span>Git</span><span>80 %</span></div><div class="track"><div class="fill" data-level="80"></div></div></div>
+      <h3 class="group-title">Compétences métier / gestion</h3>
+      <!-- MODIFIER ICI : un <li> par compétence (copiez-collez une ligne pour en ajouter) -->
+      <ul class="skills">
+        <li>Comptabilité générale et analytique</li>
+        <li>Analyse financière et contrôle de gestion</li>
+        <li>Gestion d'entreprise et management</li>
+        <li>Outils bureautiques avancés (Excel / Suite Office)</li>
+      </ul>
     </div>
 
     <div class="card">
-      <h3 class="group-title">Transversales</h3>
+      <h3 class="group-title">Compétences transversales</h3>
       <!-- MODIFIER ICI : un <span class="badge"> par compétence -->
       <div class="badges">
-        <span class="badge">Travail en équipe</span><span class="badge">Autonomie</span>
-        <span class="badge">Communication</span><span class="badge">Gestion du temps</span>
-        <span class="badge">Rigueur</span><span class="badge">Esprit d'analyse</span>
-      </div>
-      <h3 class="group-title" style="margin-top:28px">Outils</h3>
-      <div class="badges">
-        <span class="badge">VS Code</span><span class="badge">Figma</span>
-        <span class="badge">GitHub</span><span class="badge">Notion</span>
+        <span class="badge">Rigueur et esprit d'analyse</span>
+        <span class="badge">Travail en équipe</span>
+        <span class="badge">Autonomie</span>
+        <span class="badge">Gestion du temps</span>
       </div>
     </div>
 
@@ -371,31 +392,50 @@ footer{text-align:center;color:#c3ccd8;font-size:.88rem;padding:30px 24px;backgr
 </section>
 
 <!-- ========================= LANGUES ========================= -->
-<section id="langues" class="panel">
-  <h2>Langues</h2>
-  <p class="sub">Niveau indiqué sur 5.</p>
-  <div class="langs">
-    <!-- MODIFIER ICI : langue, niveau écrit, et nombre de segments colorés (class="on") -->
-    <div class="card">
-      <h3>Français</h3>
-      <div class="seg"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div>
-      <span class="place">Langue maternelle</span>
+<section id="langues" class="section">
+  <h2 style="margin-bottom:34px">Langues</h2>
+  <div class="lang-split">
+
+    <div class="langs">
+      <!-- MODIFIER ICI : une carte par langue (copiez-collez un bloc pour en ajouter) -->
+      <div class="card">
+        <h3>Français</h3>
+        <span class="place">Langue maternelle</span>
+      </div>
+      <div class="card">
+        <h3>Anglais</h3>
+        <span class="place">Étudié en BUT GEA</span>
+      </div>
     </div>
-    <div class="card">
-      <h3>Anglais</h3>
-      <div class="seg"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
-      <span class="place">Courant (C1)</span>
+
+    <!-- ==========================================================
+         VIDÉO DE PRÉSENTATION EN ANGLAIS (format vertical 9:16, comme sur TikTok)
+         Pour ajouter votre vidéo : supprimez le bloc <div class="video-ph"> et collez UNE des deux options.
+         OPTION A (recommandée, aucun cookie) : fichier envoyé avec le site, idéalement moins de 50 Mo
+           <video controls playsinline preload="metadata" poster="video-poster.jpg">
+             <source src="presentation.mp4" type="video/mp4">
+           </video>
+         OPTION B : YouTube (Shorts ou vidéo non répertoriée), version sans cookies
+           <iframe src="https://www.youtube-nocookie.com/embed/ID_DE_LA_VIDEO" title="Présentation de Valentin Nunes" allowfullscreen loading="lazy"></iframe>
+           Avec l'option B, la politique de confidentialité doit être complétée.
+         ASTUCE : choisissez une image de couverture (poster) qui donne envie de lancer la vidéo (visage visible, image nette).
+         Aucun titre n'est affiché au-dessus : c'est volontaire, pour inciter à regarder la vidéo.
+         Pas de vidéo : supprimez tout le bloc <div class="video-block">.
+         ========================================================== -->
+    <div class="video-block">
+      <div class="card video-frame" role="group" aria-label="Vidéo de présentation en anglais">
+        <div class="video-ph">
+          <div class="play"><svg viewBox="0 0 72 72" aria-hidden="true"><circle cx="36" cy="36" r="34" fill="none" stroke="#d4a24a" stroke-width="3"/><path d="M29 22l22 14-22 14z" fill="#d4a24a"/></svg></div>
+          <b>Lancer la vidéo</b>
+        </div>
+      </div>
     </div>
-    <div class="card">
-      <h3>Allemand</h3>
-      <div class="seg"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div>
-      <span class="place">Intermédiaire (B1)</span>
-    </div>
+
   </div>
 </section>
 
 <!-- ========================= PROJETS ========================= -->
-<section id="projets" class="panel">
+<section id="projets" class="section">
   <h2>Projets</h2>
   <p class="sub">Sélection de réalisations. Cliquez sur une carte pour l'ouvrir.</p>
   <div class="projects">
@@ -428,34 +468,16 @@ footer{text-align:center;color:#c3ccd8;font-size:.88rem;padding:30px 24px;backgr
 </section>
 
 <!-- ========================= CONTACT ========================= -->
-<section id="contact" class="panel">
+<section id="contact" class="section">
   <h2>Contact</h2>
   <p class="sub">Écrivez-moi pour une opportunité, un projet ou une question.</p>
-  <div class="cols">
-
-    <div class="card" style="transform:none">
-      <!-- Le formulaire ouvre la messagerie du visiteur (fonctionne sur GitHub Pages sans serveur).
-           Pour recevoir directement les messages, utilisez un service comme Formspree. -->
-      <form id="contactForm">
-        <label>Nom<input type="text" id="fNom" required autocomplete="name"></label>
-        <label>Adresse e-mail<input type="email" id="fMail" required autocomplete="email"></label>
-        <label>Message<textarea id="fMsg" required></textarea></label>
-        <!-- Information RGPD obligatoire près du formulaire (ne pas supprimer) -->
-        <p class="note">Les informations saisies servent uniquement à répondre à votre message. Elles ne sont ni revendues ni utilisées à d'autres fins. En savoir plus dans la <a href="#confidentialite" data-goto="confidentialite">politique de confidentialité</a>.</p>
-        <button class="btn" type="submit">Envoyer le message</button>
-        <p id="msg" aria-live="polite"></p>
-      </form>
-    </div>
-
-    <div class="socials">
+  <div class="socials">
       <!-- MODIFIER ICI : remplacez chaque href et le texte par vos coordonnées -->
       <a class="card social" href="https://www.linkedin.com/in/votre-profil" target="_blank" rel="noopener">LinkedIn <small>linkedin.com/in/votre-profil</small></a>
       <a class="card social" href="https://github.com/votre-pseudo" target="_blank" rel="noopener">GitHub <small>github.com/votre-pseudo</small></a>
       <a class="card social" href="mailto:valentin.nunes40@gmail.com">E-mail <small>valentin.nunes40@gmail.com</small></a>
       <a class="card social" href="tel:+33698334103">Téléphone <small>06 98 33 41 03</small></a>
     </div>
-
-  </div>
 </section>
 
 <!-- ==========================================================
@@ -468,7 +490,7 @@ footer{text-align:center;color:#c3ccd8;font-size:.88rem;padding:30px 24px;backgr
 <section id="mentions" class="panel">
   <div class="legal">
   <h2>Mentions légales</h2>
-  <p class="sub">Dernière mise à jour : 1er octobre 2026.</p>
+  <p class="sub">Dernière mise à jour : 3 octobre 2026.</p>
 
   <h3>Éditeur du site</h3>
   <p>Valentin NUNES, personne physique, site personnel à titre non commercial.<br>
@@ -494,6 +516,10 @@ footer{text-align:center;color:#c3ccd8;font-size:.88rem;padding:30px 24px;backgr
   <h3>Responsabilité</h3>
   <p>L'éditeur s'efforce de fournir des informations exactes et à jour, sans garantir leur exhaustivité. Il ne peut être tenu responsable des éventuelles erreurs, ni d'une indisponibilité temporaire du site. Les liens vers des sites tiers (LinkedIn, GitHub, projets) sont fournis à titre d'information : l'éditeur n'est pas responsable de leur contenu.</p>
 
+  <h3>Conception du site et utilisation de l'intelligence artificielle</h3>
+  <p>Ce site a été conçu avec l'aide d'un assistant d'intelligence artificielle (Claude, développé par Anthropic), utilisé pour écrire et ajuster le code du site (structure, mise en forme, animations) à partir des consignes de l'éditeur.</p>
+  <p>Les informations présentées (formations, expériences, compétences, coordonnées) sont fournies par l'éditeur, qui en reste responsable. Le site ne comporte ni assistant conversationnel ni outil d'intelligence artificielle, et les messages reçus ne sont transmis à aucun service d'intelligence artificielle.</p>
+
   <h3>Droit applicable</h3>
   <p>Le présent site est soumis au droit français. En cas de litige, les tribunaux français sont seuls compétents.</p>
   </div>
@@ -508,17 +534,17 @@ footer{text-align:center;color:#c3ccd8;font-size:.88rem;padding:30px 24px;backgr
 <section id="confidentialite" class="panel">
   <div class="legal">
   <h2>Politique de confidentialité</h2>
-  <p class="sub">Dernière mise à jour : 1er octobre 2026.</p>
+  <p class="sub">Dernière mise à jour : 3 octobre 2026.</p>
 
   <h3>Responsable du traitement</h3>
   <p>Valentin NUNES, joignable à l'adresse valentin.nunes40@gmail.com.</p>
 
   <h3>Données collectées et finalités</h3>
   <ul>
-    <li><strong>Formulaire de contact</strong> : nom, adresse e-mail et contenu du message. Finalité : répondre à votre demande. Le formulaire ouvre votre logiciel de messagerie : le message est envoyé depuis votre propre boîte e-mail vers la mienne.</li>
+    <li><strong>Messages que vous m'envoyez</strong> : si vous me contactez par e-mail ou par téléphone, j'ai accès à l'adresse ou au numéro que vous utilisez et au contenu de votre message. Finalité : répondre à votre demande. Le site ne comporte pas de formulaire de contact et n'enregistre rien de lui-même.</li>
     <li><strong>Données techniques d'hébergement</strong> : l'hébergeur (GitHub) peut enregistrer des données de connexion (adresse IP, date, pages consultées) pour assurer la sécurité et le fonctionnement du service. Je n'y ai pas accès.</li>
   </ul>
-  <p>Aucune autre donnée n'est collectée. Il n'y a ni compte utilisateur, ni outil de statistiques, ni publicité.</p>
+  <p>Aucune autre donnée n'est collectée. Il n'y a ni compte utilisateur, ni outil de statistiques, ni publicité. Aucune donnée de visiteur n'est transmise à un outil d'intelligence artificielle.</p>
 
   <h3>Base légale</h3>
   <p>Le traitement de votre message repose sur mon intérêt légitime à répondre aux personnes qui me contactent, ou sur les mesures précontractuelles lorsque votre demande concerne une opportunité professionnelle (article 6 du RGPD).</p>
@@ -554,56 +580,99 @@ footer{text-align:center;color:#c3ccd8;font-size:.88rem;padding:30px 24px;backgr
 
 <script>
 /* ==========================================================
-   JAVASCRIPT : navigation par onglets
-   Rien à modifier, sauf l'adresse e-mail du formulaire (en bas).
+   JAVASCRIPT : page unique avec défilement
+   Rien à modifier dans cette partie.
    ========================================================== */
 const tabs = document.querySelectorAll('.tab');
-const panels = document.querySelectorAll('.panel');
-
-/* Menu déroulant (téléphone) : ouvre / ferme la liste des onglets */
+const sections = document.querySelectorAll('.section');   // les 6 parties de la page
+const legalPanels = document.querySelectorAll('.panel');  // mentions légales + confidentialité
 const menuBtn = document.getElementById('menuBtn');
 const menu = document.getElementById('menu');
+
+/* Menu mobile : ouvre / ferme la grille des sections */
 function closeMenu(){ menu.classList.remove('open'); menuBtn.setAttribute('aria-expanded', 'false'); }
 menuBtn.addEventListener('click', () => {
   const open = menu.classList.toggle('open');
   menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
 });
-document.addEventListener('click', e => { if(!e.target.closest('.top')) closeMenu(); });  // clic à côté = fermeture
+document.addEventListener('click', e => { if(!e.target.closest('.top')) closeMenu(); });
 document.addEventListener('keydown', e => { if(e.key === 'Escape') closeMenu(); });
 
-/* Affiche l'onglet demandé, masque les autres */
-function showTab(id){
-  closeMenu();                                   // referme le menu après un choix
-  tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === id));
-  panels.forEach(p => p.classList.toggle('active', p.id === id));
-  window.scrollTo({top:0, behavior:'smooth'});
-  history.replaceState(null, '', '#' + id);      // l'adresse mémorise l'onglet (ex : /#contact)
-  animateBars(id);
-}
+/* Met en évidence la partie affichée dans le menu */
+function setActive(id){ tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === id)); }
 
-/* Remplit les barres de compétences à l'ouverture de l'onglet */
-function animateBars(id){
-  document.querySelectorAll('.fill').forEach(f => f.style.width = '0');
-  if(id === 'competences'){
-    setTimeout(() => document.querySelectorAll('.fill').forEach(f => f.style.width = f.dataset.level + '%'), 120);
+/* Va à une partie (défilement doux) ou ouvre une page légale */
+function goTo(id){
+  closeMenu();
+  const target = document.getElementById(id);
+  if(!target) return;
+  const wasLegal = document.body.classList.contains('legal-view');
+  if(target.classList.contains('panel')){              // page légale : on masque le reste du site
+    document.body.classList.add('legal-view');
+    legalPanels.forEach(p => p.classList.toggle('active', p.id === id));
+    setActive('');
+    window.scrollTo({top:0, behavior:'instant'});
+  } else {
+    if(wasLegal){ document.body.classList.remove('legal-view'); legalPanels.forEach(p => p.classList.remove('active')); }
+    target.scrollIntoView({behavior: wasLegal ? 'instant' : 'smooth', block:'start'});
+    setActive(id);
   }
+  history.replaceState(null, '', '#' + id);
+}
+tabs.forEach(t => t.addEventListener('click', () => goTo(t.dataset.tab)));
+document.querySelectorAll('[data-goto]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); goTo(b.dataset.goto); }));
+
+/* Frise du parcours : le trait doré se dessine et chaque rond s'allume quand le trait l'atteint */
+function updateScroll(){
+  document.querySelectorAll('.timeline').forEach(tl => {
+    const r = tl.getBoundingClientRect();
+    const prog = Math.min(1, Math.max(0, (window.innerHeight * 0.75 - r.top) / r.height));
+    tl.style.setProperty('--prog', prog);
+    const fillEnd = r.top + 8 + (r.height - 16) * prog;               // position verticale du bout du trait
+    tl.querySelectorAll('.item').forEach(it => {
+      const ir = it.getBoundingClientRect();
+      it.classList.toggle('lit', ir.top + ir.height / 2 <= fillEnd);  // le rond s'allume au milieu de sa carte
+    });
+  });
 }
 
-tabs.forEach(t => t.addEventListener('click', () => showTab(t.dataset.tab)));
-document.querySelectorAll('[data-goto]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); showTab(b.dataset.goto); }));
+/* Suivi du défilement : le menu indique la partie en cours de lecture */
+let ticking = false;
+function spy(){
+  ticking = false;
+  updateScroll();
+  if(document.body.classList.contains('legal-view')) return;
+  let current = sections[0].id;
+  sections.forEach(s => { if(s.getBoundingClientRect().top <= window.innerHeight * 0.35) current = s.id; });
+  if(window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) current = sections[sections.length - 1].id;
+  setActive(current);
+}
+window.addEventListener('scroll', () => { if(!ticking){ ticking = true; requestAnimationFrame(spy); } }, {passive:true});
 
-/* Ouvre directement l'onglet indiqué dans l'adresse */
-const start = location.hash.slice(1);
-if(document.getElementById(start)) showTab(start);
-
-/* Formulaire : ouvre la messagerie avec le message pré-rempli */
-document.getElementById('contactForm').addEventListener('submit', e => {
-  e.preventDefault();
-  const to = 'valentin.nunes40@gmail.com';           /* MODIFIER ICI : votre adresse e-mail */
-  const body = document.getElementById('fMsg').value + '\n\n' + document.getElementById('fNom').value + ' (' + document.getElementById('fMail').value + ')';
-  location.href = 'mailto:' + to + '?subject=' + encodeURIComponent('Message depuis mon portfolio') + '&body=' + encodeURIComponent(body);
-  document.getElementById('msg').textContent = 'Votre messagerie s\u2019ouvre : il ne reste qu\u2019à envoyer le message.';
+/* Animations d'apparition : titres, cartes, étapes du parcours, compétences...
+   MODIFIER ICI : ajoutez un sélecteur CSS à la liste pour animer un autre élément. */
+const groups = new Map();
+document.querySelectorAll('.section h2, .section .sub, .hero > *, .section .card, .cols > div > .group-title, .skills li, .badges .badge').forEach(el => {
+  el.classList.add('reveal');
+  const n = groups.get(el.parentElement) || 0;                 // décalage : un élément après l'autre
+  el.style.setProperty('--d', Math.min(n, 6) * 90 + 'ms');
+  groups.set(el.parentElement, n + 1);
 });
+if('IntersectionObserver' in window){
+  const io = new IntersectionObserver((entries, obs) => entries.forEach(e => {
+    if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); }
+  }), {threshold:.12, rootMargin:'0px 0px -6% 0px'});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+} else {
+  document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+}
+
+/* Ouvre directement la partie indiquée dans l'adresse (ex : /#contact), sinon active l'accueil */
+const start = location.hash.slice(1);
+if(start && document.getElementById(start)) goTo(start); else spy();
+updateScroll();
+window.addEventListener('resize', updateScroll);
+
 </script>
 </body>
 </html>
